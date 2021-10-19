@@ -4,7 +4,7 @@ public class TickTock {
 	// threads will need to share the state.
 	String state; // state of the clock which is used as condition for wait and when to call notify.
 
-	synchronized tick(boolean running){
+	synchronized void tick(boolean running){
 		// this is stop hanging and make sure so no threads are waiting in the end
 		if (!running) {
 			state = "ticked";
@@ -13,6 +13,12 @@ public class TickTock {
 		}
 
 		System.out.print("Tick");
+		// wait 1/2 a second 500 milliseconds
+		try{
+			Thread.sleep(500); 
+		} catch (InterruptedException exc){
+			System.out.println("Thread interrupted");
+		}
 		state = "ticked";
 
 		notify(); // allow for the tock thread to wake up if its sleeping
@@ -28,13 +34,20 @@ public class TickTock {
 	}
 
 	// almost mirror of tick.
-	synchronized tock(boolean running){
+	synchronized void tock(boolean running){
 		if (!running){
 			state = "tocked";
 			notify();
 			return;
 		}
 	System.out.println("Tock");
+	// wait 1/2 a second 500 milliseconds
+		try{
+			Thread.sleep(500); 
+		} catch (InterruptedException exc){
+			System.out.println("Thread interrupted");
+		}
+
 	state = "tocked";
 	notify();
 	try{
